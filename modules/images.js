@@ -12,7 +12,8 @@ async function composeImages(input) {
     create: {
       width: 900,
       height: 900,
-      background: 'alpha'
+      channels: 4,
+      background: 'black'
     }
   })
    .composite([
@@ -21,5 +22,8 @@ async function composeImages(input) {
      { input: bottom, top: 600, left: 300 },
      { input: left, top: 300, left: 0 }
    ])
+    .png()
     .toBuffer()
 }
+
+module.exports = { composeImages }
