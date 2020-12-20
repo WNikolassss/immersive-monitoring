@@ -17,6 +17,10 @@ app.post('*', fileUpload(), async (req, res) => {
     const image = Buffer.from(req.files.image.data)
     const result = await composeImages(image)
     const stream = new Duplex()
+    res.set({
+      'content-type': 'image/png',
+      'content-length': Buffer.byteLength(result)
+    })
     stream.push(result)
     stream.push(null)
     stream.pipe(res)
