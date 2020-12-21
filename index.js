@@ -3,7 +3,7 @@ const cors = require('cors')
 const { Duplex } = require('stream')
 const fileUpload = require('express-fileupload')
 
-const { composeImages } = require('./modules/images')
+const { composeImages, uploadImage } = require('./modules')
 
 const PORT = process.env.PORT || 3000
 
@@ -14,16 +14,9 @@ app.use(express.urlencoded({ extended: true }))
 
 app.post('*', fileUpload(), async (req, res) => {
   try {
-    const image = Buffer.from(req.files.image.data)
-    const result = await composeImages(image)
-    const stream = new Duplex()
-    res.set({
-      'content-type': 'image/png',
-      'content-length': Buffer.byteLength(result)
-    })
-    stream.push(result)
-    stream.push(null)
-    stream.pipe(res)
+    const transformed = await composeImages(req.files)
+    const uploaded = await uploadImage(transformed)
+    return res.status(200).json(uploaded)
   } catch (e) {
     console.error('ERROR', e)
     return res.status(500).json({ message: e.message || 'Something went wrong' })
