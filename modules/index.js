@@ -1,4 +1,4 @@
 module.exports = {
   ...require('./images'),
-  ...require('./uploader')
+  ...require('./storage')
 }
