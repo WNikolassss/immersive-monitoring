@@ -1,6 +1,9 @@
+const { config } = require('dotenv')
 const express = require('express')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
+
+config()
 
 const { composeImages, uploadImage, listUploaded } = require('./modules')
 
